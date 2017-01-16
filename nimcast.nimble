@@ -14,5 +14,5 @@ bin = @["nimcast"]
 requires "nim >= 0.16.0", "jester"
 
 task setupDb, "Create a fresh database":
-  exec "nimble c -r src/nimcastpkg/setupDb.nim" 
+  exec "nimble c -r src/nimcast/setupDb.nim" 
 
