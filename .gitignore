@@ -1,0 +1,4 @@
+nimcast
+src/nimcastpkg/initDb
+tests/test_db
+*.db
