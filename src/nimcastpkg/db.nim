@@ -69,9 +69,9 @@ proc getLatestEpisode*(db: Db): Episode =
 
 proc getEpisodesByGuest*(db: Db, guest: string): seq[Episode] =
   db.connection.getAllRows(
-    sql"SELECT * FROM Episode WHERE guest IS ? ORDER BY timestamp",
-    guest
-  ).toEpisodes()
+    sql"SELECT * FROM Episode WHERE guest IS ? ORDER BY timestamp", guest)
+    .toEpisodes()
 
 proc getAllEpisodes*(db: Db): seq[Episode] =
-  db.connection.getAllRows(sql"SELECT * FROM Episode;").toEpisodes()
+  db.connection.getAllRows(
+    sql"SELECT * FROM Episode ORDER BY timestamp;").toEpisodes()
