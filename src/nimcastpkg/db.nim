@@ -29,9 +29,7 @@ proc init*(db: Db) =
         timestamp integer NOT NULL,
         notes text,
         tags text
-      );
-    """
-  )
+      );""")
 
 proc close*(db: Db) = db.connection.close()
 
@@ -39,5 +37,10 @@ proc add*(db: Db, episode: Episode) =
   db.connection.exec(
     sql"INSERT INTO Episode VALUES (?, ?, ?, ?, ?, ?);",
     episode.title, episode.tagline, episode.guest,
-    int(episode.timestamp), %episode.notes, %episode.tags
-  )
+    int(episode.timestamp), %episode.notes, %episode.tags)
+
+proc findLatestEpisode*(db: Db): Episode =
+  new result
+
+  let row = db.connection.getRow(
+    sql"SELECT * FROM Episode ORDER BY timestamp DESC LIMIT 1;")
