@@ -1,8 +1,9 @@
 import asyncdispatch
 import jester
+import nimcastpkg/views/index
 
 routes:
   get "/":
-    resp "Hello World!"
+    resp renderIndex()
 
 runForever()
