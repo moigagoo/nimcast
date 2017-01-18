@@ -2,26 +2,26 @@
 #
 #import strutils
 #import future
-#import ../db
+#from ../db import Episode
+#
 #
 #proc renderNotes(notes: seq[string]): string =
 #  result = ""
-#  if len(notes) == 0:
-#    return
+#  if len(notes) > 0:
+<ul class="notes">
+#    for note in notes:
+	<li>$note</li>
+#    end for
+</ul>
 #  end if
-									<ul class="notes">
-#  for note in notes:
-										<li>$note</li>
-#  end for
-									</ul>
 #end proc
 #
 #proc renderTags(tags: seq[string]): string =
 #  result = ""
 #  const tagLink = """<a href="/episodes/tag/$#">$#</a>"""
-									<div class="tags">
-										${lc[tagLink % [tag, tag] | (tag <- tags), string].join(", ")}
-									</div>
+<div class="tags">
+	${lc[tagLink % [tag, tag] | (tag <- tags), string].join(", ")}
+</div>
 #end proc
 #
 #proc renderLatestEpisodeBanner(latestEpisode: Episode): string =
@@ -30,53 +30,52 @@
 #  if not latestEpisode.guest.isNilOrEmpty:
 #    guestSuffix = """ <a href="/episodes/guest/$#" class="guest">with $#</a>""" % [latestEpisode.guest, latestEpisode.guest]
 #  end if
-						<!-- Banner -->
-							<section id="banner">
-								<header>
-									<h2><a href="/episode/latest">
-										$latestEpisode.title
-										$guestSuffix
-									</a></h2>
-									$latestEpisode.code
-									<p class="tagline">$latestEpisode.tagline</p>
-									${renderNotes(latestEpisode.notes)}
-									${renderTags(latestEpisode.tags)}
-								</header>
-							</section>
+<!-- Banner -->
+	<section id="banner">
+		<header>
+			<h2><a href="/episode/latest">
+				$latestEpisode.title
+				$guestSuffix
+			</a></h2>
+			$latestEpisode.code
+			<p class="tagline">$latestEpisode.tagline</p>
+			${renderNotes(latestEpisode.notes)}
+			${renderTags(latestEpisode.tags)}
+		</header>
+	</section>
 #end proc
 #
 #proc renderEpisodeTile(episode: Episode): string =
 #  result = ""
-											<div class="4u 12u(mobile)">
-												<section class="box">
-													<a href="#" class="image featured"><img src="images/pic02.jpg" alt="" /></a>
-													<header>
-														<h3>$episode.title</h3>
-													</header>
-													<p>$episode.tagline</p>
-													<footer>
-														<a href="/episode/$episode.id" class="button alt">Listen</a>
-													</footer>
-												</section>
-											</div>
+<div class="6u 12u(mobile)">
+	<section class="box">
+		<a href="#" class="image featured"><img src="images/pic02.png" alt="" /></a>
+		<header>
+			<h3>$episode.title</h3>
+		</header>
+		<p>$episode.tagline</p>
+		<footer>
+			<a href="/episode/$episode.id" class="button alt">Listen</a>
+		</footer>
+	</section>
+</div>
 #end proc
 #
 #proc renderEpisodes(episodes: seq[Episode]): string =
 #  result = ""
-#  if len(episodes) <= 1:
-#    return
-#  end if
-								<!-- Portfolio -->
-									<section>
-										<header class="major">
-											<h2>Episodes</h2>
-										</header>
-										<div class="row">
+#  if len(episodes) > 1:
+<!-- Portfolio -->
+	<section>
+		<header class="major">
+			<h2>Episodes</h2>
+		</header>
+		<div class="row">
 #    for episode in episodes[1..high(episodes)]:
-											${renderEpisodeTile(episode)}
+			${renderEpisodeTile(episode)}
 #    end for
-										</div>
-									</section>
+		</div>
+	</section>
+#  end if
 #end proc
 #
 #proc renderHome*(episodes: seq[Episode]): string =
@@ -105,8 +104,7 @@
 
 						<!-- Logo -->
 							<h1>The Nim Lang Podcast</h1>
-
-						${renderLatestEpisodeBanner(episodes[0])}
+							${renderLatestEpisodeBanner(episodes[0])}
 
 					</div>
 				</div>
