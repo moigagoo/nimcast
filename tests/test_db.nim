@@ -19,7 +19,7 @@ suite "database tests":
       tags = @["test", "episode", "guest"]
     )
 
-    testDb.add testEpisode
+    discard testDb.add testEpisode
 
     check:
       testEpisode in testDb.getAllEpisodes()
@@ -31,7 +31,7 @@ suite "database tests":
       timestamp = getTime() - 5.minutes
     )
 
-    testDb.add testMinimalEpisode
+    discard testDb.add testMinimalEpisode
 
     check:
       testMinimalEpisode in testDb.getAllEpisodes()
@@ -43,10 +43,10 @@ suite "database tests":
       timestamp = getTime()
     )
 
-    testDb.add testLatestEpisode
+    discard testDb.add testLatestEpisode
 
     check:
-      testDb.getLatestEpisode() == testLatestEpisode
+      testDb.getLatestEpisode().get() == testLatestEpisode
 
   test "get episodes by guest":
     const guest = "Guest"
@@ -65,12 +65,26 @@ suite "database tests":
         timestamp = getTime() - 5.minutes
       )
 
-    testDb.add testGuestEpisode1
-    testDb.add testGuestEpisode2
+    discard testDb.add testGuestEpisode1
+    discard testDb.add testGuestEpisode2
 
     check:
-      testDb.getEpisodesByGuest(guest) == @[testGuestEpisode1,
-                                            testGuestEpisode2]
+      testDb.getEpisodesByGuest(guest) == @[testGuestEpisode2,
+                                            testGuestEpisode1]
+
+  test "remove episode":
+    let
+      testEpisodeToRemove = newEpisode(
+        title = "Episode to Be Removed",
+        code = "Doesn't matter, will be removed.",
+        timestamp = getTime()
+      )
+      testEpisodeToRemoveId = testDb.add testEpisodeToRemove
+
+    testDb.remove testEpisodeToRemoveId
+
+    check:
+      testDb.getEpisodeById(testEpisodeToRemoveId).isNone
 
   testDb.close()
   removeFile testDbFilename
