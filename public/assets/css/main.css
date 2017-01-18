@@ -1882,11 +1882,11 @@
 		/* Wrappers */
 
 			#header-wrapper {
-				padding: 4.5em 0 4em 0;
+				padding: 4.5em 0 0 0;
 			}
 
 			#main-wrapper {
-				padding: 4em 0 4em 0;
+				padding: 0 0 4em 0;
 			}
 
 			#footer-wrapper {
@@ -2004,7 +2004,8 @@
 
 			#banner {
 				position: relative;
-				padding: 8em 0;
+				padding-top: 5em;
+				padding-bottom: 8em;
 				margin: 4em 0 0 0;
 			}
 
@@ -2012,15 +2013,40 @@
 					display: inline-block;
 					padding: 2.5em 5em;
 					border-radius: 5px;
+					width: 60%;
+					text-align: left;
 				}
 
 					#banner header h2 {
 						font-size: 2.5em;
 						margin: 0 0 0.65em 0;
+						text-align: center;
+					}
+
+					#banner header h2 a.guest {
+						font-size: 60%;
 					}
 
 					#banner header p {
 						font-size: 1.5em;
+					}
+
+					#banner header p.tagline {
+						margin-bottom: 1em;
+					}
+
+					#banner header iframe {
+						padding-bottom: 0.25em;
+					}
+
+					#banner header ul.notes {
+						color: white;
+						list-style-type: disc;
+						margin-bottom: 1em;
+					}
+
+					#banner header div.tags {
+						text-align: right;
 					}
 
 		/* Intro */
