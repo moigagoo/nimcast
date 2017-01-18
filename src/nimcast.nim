@@ -1,11 +1,12 @@
 import strutils, times
 import parseopt
-import asyncdispatch
+import asyncdispatch, httpcore
 
 import docopt
 import jester
 
-import nimcastpkg/db, nimcastpkg/views/home
+import nimcastpkg/db
+import nimcastpkg/views/home, nimcastpkg/views/episode
 
 
 let doc = """
@@ -63,9 +64,15 @@ when isMainModule:
         get "/episode/latest":
           redirect "/episode/" & $database.getLatestEpisode().get().id
 
-        get "/episode/@number":
-          cond @"number".isDigit
-          resp "Episode " & @"number"
+        get "/episode/@id":
+          cond @"id".isDigit
+
+          let episode = database.getEpisodeById(parseInt(@"id"))
+
+          if episode.isNone:
+            resp Http404, "There is no such episode :-("
+          else:
+            resp renderEpisode(episode.get())
 
         get "/episodes/tag/@tag":
           resp "Episodes tagged with " & @"tag"
