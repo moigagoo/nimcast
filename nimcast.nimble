@@ -14,7 +14,11 @@ bin = @["nimcast"]
 requires "nim >= 0.16.0", "jester"
 
 task initDb, "Init database":
-  exec "nim c -r src/nimcastpkg/initDb"
+  exec "nimble c -r src/nimcastpkg/initDb.nim"
 
 task test, "Run tests":
-  exec "nim c -r tests/test_db"
+  exec "nimble c -r tests/test_db.nim"
+
+task run, "Run nimcast":
+  exec "nimble build"
+  exec "./nimcast"
