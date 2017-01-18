@@ -10,7 +10,7 @@ routes:
     resp renderHome(database.getAllEpisodes())
 
   get "/episode/latest":
-    redirect "/episode/" & $database.getLatestEpisode().id
+    redirect "/episode/" & $database.getLatestEpisode().get().id
 
   get "/episode/@number":
     cond @"number".isDigit
