@@ -24,19 +24,22 @@
 </div>
 #end proc
 #
+#proc renderGuest(guest: string): string =
+#  result = ""
+#  if not guest.isNilOrEmpty:
+<a href="/episodes/guest/$guest" class="guest">with $guest</a>
+#  end if
+#end proc
+#
 #proc renderLatestEpisodeBanner(latestEpisode: Episode): string =
 #  result = ""
-#  var guestSuffix: string = ""
-#  if not latestEpisode.guest.isNilOrEmpty:
-#    guestSuffix = """ <a href="/episodes/guest/$#" class="guest">with $#</a>""" % [latestEpisode.guest, latestEpisode.guest]
-#  end if
 <!-- Banner -->
 	<section id="banner">
 		<header>
-			<h2><a href="/episode/latest">
-				$latestEpisode.title
-				$guestSuffix
-			</a></h2>
+			<h2>
+				<a href="/episode/latest">$latestEpisode.title</a>
+				${renderGuest(latestEpisode.guest)}
+			</h2>
 			$latestEpisode.code
 			<p class="tagline">$latestEpisode.tagline</p>
 			${renderNotes(latestEpisode.notes)}
@@ -52,6 +55,7 @@
 		<a href="#" class="image featured"><img src="images/pic02.png" alt="" /></a>
 		<header>
 			<h3>$episode.title</h3>
+			<h4>${renderGuest(episode.guest)}</h4>
 		</header>
 		<p>$episode.tagline</p>
 		<footer>
