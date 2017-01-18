@@ -11,14 +11,10 @@ bin = @["nimcast"]
 
 # Dependencies
 
-requires "nim >= 0.16.0", "jester"
+requires "nim >= 0.16.0", "jester", "docopt"
 
 task initDb, "Init database":
-  exec "nimble c -r src/nimcastpkg/initDb.nim"
+  exec "nim c -r src/nimcastpkg/initDb"
 
 task test, "Run tests":
-  exec "nimble c -r tests/test_db.nim"
-
-task run, "Run nimcast":
-  exec "nimble build"
-  exec "./nimcast"
+  exec "nim c -r tests/test_db"
