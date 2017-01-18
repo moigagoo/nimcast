@@ -1,4 +1,3 @@
 nimcast
-src/nimcastpkg/dbCli
 tests/test_db
 *.db
