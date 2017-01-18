@@ -1,4 +1,4 @@
 nimcast
-src/nimcastpkg/initDb
+src/nimcastpkg/dbCli
 tests/test_db
 *.db
