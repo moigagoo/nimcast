@@ -28,6 +28,10 @@ proc newEpisode*(title, code: string, tagline, guest: string = "",
   Episode(title: title, code: code, tagline: tagline, guest: guest,
           timestamp: timestamp, notes: notes, tags: tags)
 
+proc `==`*(e1, e2: Episode): bool = e1.title == e2.title and
+  e1.code == e2.code and e2.tagline == e2.tagline and e1.guest == e2.guest and
+  e1.timestamp == e2.timestamp and e1.notes == e2.notes and e1.tags == e2.tags
+
 proc init*(db: Db) =
   db.connection.exec(
     sql"""
