@@ -41,7 +41,11 @@
 				${renderGuest(latestEpisode.guest)}
 			</h2>
 			$latestEpisode.code
-			<p class="tagline">$latestEpisode.tagline</p>
+			<div class="tagline">
+#  for paragraph in latestEpisode.tagline:
+				<p>$paragraph</p>
+#  end for
+			</div>
 			${renderNotes(latestEpisode.notes)}
 			${renderTags(latestEpisode.tags)}
 		</header>
@@ -57,7 +61,9 @@
 			<h3>$episode.title</h3>
 			<h4>${renderGuest(episode.guest)}</h4>
 		</header>
-		<p>$episode.tagline</p>
+#  for paragraph in episode.tagline:
+		<p>$paragraph</p>
+#  end for
 		<footer>
 			<a href="/episode/$episode.id" class="button alt">Listen</a>
 		</footer>
