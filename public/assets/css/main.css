@@ -2031,8 +2031,13 @@
 						font-size: 1.5em;
 					}
 
-					#banner header p.tagline {
+					#banner header div.tagline {
 						margin-bottom: 1em;
+						width: 80%;
+					}
+
+					#banner header div.tagline p {
+						margin-top: 0.5em;
 					}
 
 					#banner header iframe {
