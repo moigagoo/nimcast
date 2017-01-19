@@ -12,9 +12,9 @@ type
     id*: int
     title*: string
     code*: string
-    tagline*: string
     guest*: string
     timestamp*: Time
+    tagline*: seq[string]
     notes*: seq[string]
     tags*: seq[string]
 
@@ -26,10 +26,10 @@ proc newDb*(filename = "nimcast.db"): Db =
   new result
   result.connection = open(filename, "", "", "")
 
-proc newEpisode*(title, code: string, tagline, guest: string = "",
-                 timestamp: Time, notes, tags: seq[string] = @[]): Episode =
-  Episode(title: title, code: code, tagline: tagline, guest: guest,
-          timestamp: timestamp, notes: notes, tags: tags)
+proc newEpisode*(title, code: string, guest: string = "", timestamp: Time,
+                 tagline, notes, tags: seq[string] = @[]): Episode =
+  Episode(title: title, code: code, guest: guest, timestamp: timestamp,
+          tagline: tagline, notes: notes, tags: tags)
 
 proc `==`*(e1, e2: Episode): bool = e1.title == e2.title and
   e1.code == e2.code and e2.tagline == e2.tagline and e1.guest == e2.guest and
@@ -43,9 +43,9 @@ proc init*(db: Db) =
         id integer PRIMARY KEY AUTOINCREMENT,
         title text NOT NULL,
         code text NOT NULL,
-        tagline text,
         guest text,
         timestamp integer NOT NULL,
+        tagline text,
         notes text,
         tags text
       );
@@ -62,9 +62,9 @@ proc toEpisode(row: Row): Option[Episode] =
       id: parseInt(row[0]),
       title: row[1],
       code: row[2],
-      tagline: row[3],
-      guest: row[4],
-      timestamp: row[5].parseInt().fromSeconds(),
+      guest: row[3],
+      timestamp: row[4].parseInt().fromSeconds(),
+      tagline: lc[node.getStr() | (node <- parseJson(row[5])), string],
       notes: lc[node.getStr() | (node <- parseJson(row[6])), string],
       tags: lc[node.getStr() | (node <- parseJson(row[7])), string],
     )
@@ -75,8 +75,8 @@ proc toEpisodes(rows: seq[Row]): seq[Episode] =
 proc add*(db: Db, episode: Episode): int =
   db.connection.insertId(
     sql"INSERT INTO Episode VALUES (NULL, ?, ?, ?, ?, ?, ?, ?);",
-    episode.title, episode.code, episode.tagline, episode.guest,
-    int(episode.timestamp), %episode.notes, %episode.tags).int
+    episode.title, episode.code, episode.guest, int(episode.timestamp),
+    %episode.tagline, %episode.notes, %episode.tags).int
 
 proc remove*(db: Db, episodeId: int) =
   db.connection.exec(
