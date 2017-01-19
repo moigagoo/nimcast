@@ -108,11 +108,14 @@
 
 						<!-- Logo -->
 							<h1>The Nim Lang Podcast</h1>
+#  if len(episodes) > 0:
 							${renderLatestEpisodeBanner(episodes[0])}
-
+#  else:
+							<p>Nothing to see here yet.</p>
+#  end if
 					</div>
 				</div>
-
+#  if len(episodes) > 1:
 			<!-- Main -->
 				<div id="main-wrapper">
 					<div class="container">
@@ -123,7 +126,7 @@
 						</div>
 					</div>
 				</div>
-
+# end if
 		</div>
 
 		<!-- Scripts -->
