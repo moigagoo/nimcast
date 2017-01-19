@@ -100,11 +100,12 @@ when isMainModule:
         episode = newEpisode(
           title = prompt "Title",
           code = prompt "Code",
-          tagline = prompt("Tagline", default = ""),
           guest = prompt("Guest", default = ""),
           timestamp = getTime(),
-          notes = prompt("Notes (comma-separated)", default = "").split(','),
-          tags = prompt("Tags (comma-separated)", default = "").split(',')
+          tagline = prompt("Tagline ('|' splits paragraphs)",
+                           default = "").split('|'),
+          notes = prompt("Notes ('|'-separated)", default = "").split('|'),
+          tags = prompt("Tags ('|'-separated)", default = "").split('|')
         )
         episodeId = database.add episode
 
@@ -119,7 +120,7 @@ when isMainModule:
 
       for episode in database.getAllEpisodes():
         echo @[
-          $episode.id, episode.title, episode.tagline,
+          $episode.id, episode.title,
           episode.timestamp.getLocalTime.format "d MMMM yyyy HH:mm"
         ].join(" | ")
       database.close()
