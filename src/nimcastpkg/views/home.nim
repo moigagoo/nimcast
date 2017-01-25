@@ -8,6 +8,7 @@
 #proc renderNotes(notes: seq[string]): string =
 #  result = ""
 #  if len(notes) > 0:
+Shownotes:
 <ul class="notes">
 #    for note in notes:
 	<li>$note</li>
