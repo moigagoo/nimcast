@@ -31,9 +31,7 @@ proc newEpisode*(title, code: string, guest: string = "", timestamp: Time,
   Episode(title: title, code: code, guest: guest, timestamp: timestamp,
           tagline: tagline, notes: notes, tags: tags)
 
-proc `==`*(e1, e2: Episode): bool = e1.title == e2.title and
-  e1.code == e2.code and e2.tagline == e2.tagline and e1.guest == e2.guest and
-  e1.timestamp == e2.timestamp and e1.notes == e2.notes and e1.tags == e2.tags
+proc `==`*(e1, e2: Episode): bool = e1.title == e2.title
 
 proc init*(db: Db) =
   db.connection.exec(sql"DROP TABLE IF EXISTS Episode;")
@@ -76,7 +74,8 @@ proc add*(db: Db, episode: Episode): int =
   db.connection.insertId(
     sql"INSERT INTO Episode VALUES (NULL, ?, ?, ?, ?, ?, ?, ?);",
     episode.title, episode.code, episode.guest, int(episode.timestamp),
-    %episode.tagline, %episode.notes, %episode.tags).int
+    %episode.tagline, %episode.notes, %episode.tags
+  ).int
 
 proc remove*(db: Db, episodeId: int) =
   db.connection.exec(
@@ -97,8 +96,8 @@ proc getLatestEpisode*(db: Db): Option[Episode] =
 
 proc getEpisodesByGuest*(db: Db, guest: string): seq[Episode] =
   db.connection.getAllRows(
-    sql"SELECT * FROM Episode WHERE guest IS ? ORDER BY timestamp DESC", guest)
-    .toEpisodes()
+    sql"SELECT * FROM Episode WHERE guest IS ? ORDER BY timestamp DESC", guest
+  ).toEpisodes()
 
 proc getAllEpisodes*(db: Db): seq[Episode] =
   db.connection.getAllRows(
