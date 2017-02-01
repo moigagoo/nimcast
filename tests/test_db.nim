@@ -8,6 +8,12 @@ suite "database tests":
   let testDb = newDb(testDbFilename)
   testDb.init()
 
+  setup:
+    testDb.init()
+
+  tearDown:
+    testDb.init()
+
   test "add episode with all fields":
     let testEpisode = newEpisode(
       title = "Test Episode",
